@@ -66,6 +66,7 @@ from datetime import datetime, timedelta
 
 # tkinter class area of circle
 from tkinter import *
+from tkinter import messagebox
 from math import pi
 
 
@@ -73,15 +74,32 @@ class Circle(object):
     def __init__(self, radius):
         self.radius = radius
 
-    def circle_area(self):
+    def area(self):
         result = (pi*(self.radius**2))
         return result
 
 
 root = Tk()
-root.geometry('700x500')
-root.config(bg='#555')
+label = Label(root, text='Enter radius: ')
+label.grid(row=1, column=1)
+entry = Entry(root)
+entry.grid(row=1, column=2)
+area_circle = Entry(root, state='readonly')
+area_circle.grid(row=2, column=2)
 
 
+def calculate():
+    try:
+        circle = Circle(float(entry.get()))
+    except ValueError:
+        messagebox.showerror(message='invalid entry')
+    area_circle.config(state='normal')
+    area_circle.insert(0, round(circle.area(), 1))
+    area_circle.config(state='readonly')
 
+
+calc = Button(root, text='calculate', command=calculate)
+calc.grid(row=1,column=3)
+label2 = Label(root, text='Area of circle:')
+label2.grid(row=2, column=1)
 root.mainloop()
