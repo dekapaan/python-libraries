@@ -71,37 +71,30 @@ from tkinter import messagebox
 from math import pi
 
 
-class Circle(object):
-    def __init__(self, radius):
-        self.radius = radius
+class Circle:
+    def __init__(self, master):
+        self.label = Label(master, text='Enter radius: ')
+        self.label.grid(row=1, column=1)
+        self.entry = Entry(master)
+        self.entry.grid(row=1, column=2)
+        self.area_circle = Entry(master, state='readonly')
+        self.area_circle.grid(row=2, column=2)
+        self.calc = Button(root, text='calculate', command=self.area)
+        self.calc.grid(row=1, column=3)
+        self.label2 = Label(root, text='Area of circle:')
+        self.label2.grid(row=2, column=1)
 
     def area(self):
-        result = (pi*(self.radius**2))
-        return result
+        result = (pi*(int(self.entry.get())**2))
+        self.area_circle.config(state='normal')
+        self.area_circle.insert(0, round(result))
+        self.area_circle.config(state='readonly')
 
 
 root = Tk()
 root.title('Circle Area Calculator')
-label = Label(root, text='Enter radius: ')
-label.grid(row=1, column=1)
-entry = Entry(root)
-entry.grid(row=1, column=2)
-area_circle = Entry(root, state='readonly')
-area_circle.grid(row=2, column=2)
-
-
-def calculate():
-    try:
-        circle = Circle(float(entry.get()))
-    except ValueError:
-        messagebox.showerror(message='invalid entry')
-    area_circle.config(state='normal')
-    area_circle.insert(0, round(circle.area(), 1))
-    area_circle.config(state='readonly')
-
-
-calc = Button(root, text='calculate', command=calculate)
-calc.grid(row=1, column=3)
-label2 = Label(root, text='Area of circle:')
-label2.grid(row=2, column=1)
+Circle(root)
 root.mainloop()
+
+
+
